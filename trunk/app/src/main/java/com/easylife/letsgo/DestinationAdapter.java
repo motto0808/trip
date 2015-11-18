@@ -1,12 +1,18 @@
 package com.easylife.letsgo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -39,7 +45,6 @@ public class DestinationAdapter
         this.destinations = destinations;
     }
 
-
     private List<DestinationCard> destinations;
 
     private Context mContext;
@@ -56,12 +61,46 @@ public class DestinationAdapter
     @Override
     public void onBindViewHolder( DestinationViewHolder viewHolder, int i ) {
         DestinationCard dest = destinations.get(i);
-        viewHolder.mTextView.setText(dest.name);
+        viewHolder.mDestTitle.setText(dest.name);
+        viewHolder.mDestDesc.setText(dest.destDesc);
         int resid = dest.getImageResourceId(mContext);
         if(resid != -1)
         {
             viewHolder.mImageView.setImageResource(resid);
         }
+
+        BitmapDrawable bd = (BitmapDrawable)viewHolder.mImageView.getDrawable();
+        Bitmap bmp  = bd.getBitmap();
+
+        final DestinationViewHolder f_viewHolder = viewHolder;
+        Palette.generateAsync(bmp, new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                Palette.Swatch swatch = palette.getVibrantSwatch();
+                if (null != swatch) {
+                    f_viewHolder.mCardView.setCardBackgroundColor(swatch.getRgb());
+                    f_viewHolder.mDestTitle.setTextColor(swatch.getTitleTextColor());
+                    f_viewHolder.mDestDesc.setTextColor(swatch.getBodyTextColor());
+                    f_viewHolder.mBtnMore.setTextColor(swatch.getTitleTextColor());
+                }
+            }
+        });
+
+        final int index = i;
+
+        viewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), String.format("Click CardView%d", index), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewHolder.mBtnLove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), String.format("Click heart%d", index), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

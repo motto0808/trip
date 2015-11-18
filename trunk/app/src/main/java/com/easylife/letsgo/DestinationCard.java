@@ -8,12 +8,14 @@ import android.content.Context;
 
 public class DestinationCard {
     String name;
+    String destDesc;
 
     String picName;
 
     public DestinationCard(String name, String picName) {
         this.name = name;
         this.picName = picName;
+        destDesc = "Something to desc";
     }
 
     public int getImageResourceId(Context context) {

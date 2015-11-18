@@ -3,7 +3,9 @@ package com.easylife.letsgo;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -12,25 +14,30 @@ import android.widget.TextView;
 public class DestinationViewHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener
 {
-    public TextView mTextView;
-
+    public CardView mCardView;
+    public TextView mDestTitle;
+    public TextView mDestDesc;
     public ImageView mImageView;
-
-    public ImageView mImageViewLove;
+    public Button mBtnLove;
+    public Button mBtnMore;
 
     private DestinationAdapter.OnItemClickListener mListener;
 
     public DestinationViewHolder( View v, DestinationAdapter.OnItemClickListener listener)
     {
         super(v);
-        mTextView = (TextView) v.findViewById(R.id.name);
-        mImageView = (ImageView) v.findViewById(R.id.pic);
-        mImageViewLove = (ImageView) v.findViewById(R.id.pic_love);
+        mCardView = (CardView) v.findViewById(R.id.card_view);
+        mDestTitle = (TextView) v.findViewById(R.id.dest_title);
+        mDestDesc = (TextView) v.findViewById(R.id.dest_desc);
+
+        mImageView = (ImageView) v.findViewById(R.id.dest_pic);
+        mBtnLove = (Button) v.findViewById(R.id.btn_love);
+        mBtnMore = (Button) v.findViewById(R.id.btn_more);
 
         mListener = listener;
 
-        v.setOnClickListener(this);
-        v.setOnLongClickListener(this);
+        //v.setOnClickListener(this);
+        //v.setOnLongClickListener(this);
     }
 
     @Override
