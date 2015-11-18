@@ -1,7 +1,6 @@
 package com.easylife.letsgo;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +13,24 @@ import java.util.List;
 /**
  * Created by xtgsy on 2015/11/8.
  */
+
 public class DestinationAdapter
-    extends RecyclerView.Adapter<DestinationAdapter.ViewHolder>
+    extends RecyclerView.Adapter<DestinationViewHolder>
 {
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    public interface OnItemClickListener
     {
-        public TextView mTextView;
+        void onItemClick(View view, int position);
+        void onItemLongClick(View view , int position);
+    }
 
-        public ImageView mImageView;
+    private OnItemClickListener mItemClickListener;
 
-        public ViewHolder( View v )
-        {
-            super(v);
-            mTextView = (TextView) v.findViewById(R.id.name);
-            mImageView = (ImageView) v.findViewById(R.id.pic);
-        }
+    /**
+     * 设置Item点击监听
+     * @param listener
+     */
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mItemClickListener = listener;
     }
 
     public DestinationAdapter(Context context, List<DestinationCard> destinations)
@@ -43,17 +45,16 @@ public class DestinationAdapter
     private Context mContext;
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i )
-    {
+    public DestinationViewHolder onCreateViewHolder(ViewGroup viewGroup, int i ) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.destination_card, viewGroup, false);
 
-        ViewHolder viewHolder = new ViewHolder(v);
+        DestinationViewHolder viewHolder = new DestinationViewHolder(v, mItemClickListener);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder viewHolder, int i ) {
+    public void onBindViewHolder( DestinationViewHolder viewHolder, int i ) {
         DestinationCard dest = destinations.get(i);
         viewHolder.mTextView.setText(dest.name);
         int resid = dest.getImageResourceId(mContext);
@@ -68,7 +69,4 @@ public class DestinationAdapter
     {
           return destinations == null ? 0 : destinations.size();
     }
-
-
-
 }

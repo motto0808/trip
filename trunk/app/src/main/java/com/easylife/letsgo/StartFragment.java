@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,9 @@ import java.util.List;
  * Use the {@link StartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartFragment extends Fragment {
+public class StartFragment extends Fragment
+    implements DestinationAdapter.OnItemClickListener
+{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -87,6 +90,7 @@ public class StartFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         // 初始化自定义的适配器
         mAdapter = new DestinationAdapter(getContext(), m_destinations);
+        mAdapter.setOnItemClickListener(this);
         // 为mRecyclerView设置适配器
         mRecyclerView.setAdapter(mAdapter);
 
@@ -115,6 +119,18 @@ public class StartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        String tips = String.format("Click love pic%d.", position);
+        Toast.makeText(view.getContext(), tips, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        String tips = String.format("Click love pic%d.", position);
+        Toast.makeText(view.getContext(), tips, Toast.LENGTH_SHORT).show();
     }
 
     /**

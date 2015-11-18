@@ -7,27 +7,22 @@ package com.easylife.letsgo;
 import android.content.Context;
 
 public class DestinationCard {
-        String name;
+    String name;
 
-        String picName;
+    String picName;
 
-        public DestinationCard(String name, String picName)
-        {
-            this.name = name;
-            this.picName = picName;
+    public DestinationCard(String name, String picName) {
+        this.name = name;
+        this.picName = picName;
+    }
+
+    public int getImageResourceId(Context context) {
+        try {
+            return context.getResources().getIdentifier(this.picName, "drawable", context.getPackageName());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
-
-        public int getImageResourceId( Context context )
-        {
-            try
-            {
-                return context.getResources().getIdentifier(this.picName, "drawable", context.getPackageName());
-
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                return -1;
-            }
-        }
+    }
 }
