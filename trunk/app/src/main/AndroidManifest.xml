@@ -17,15 +17,10 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+
+        <provider android:name=".search.SearchSuggestionsProvider"
+            android:authorities="com.easylife.suggestions" />
+
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -37,15 +32,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".search.SearchActivity" />
+
+        </activity>
+
         <activity
             android:name=".search.SearchActivity"
             android:parentActivityName=".MainActivity"
             android:label="Search"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
 

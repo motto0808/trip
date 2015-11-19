@@ -1,5 +1,7 @@
 package com.easylife.letsgo;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +14,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RadioGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 
@@ -81,6 +86,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+        MenuItem searchViewButton = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView)searchViewButton.getActionView();
+        if(searchView != null)
+        {
+            searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+
         return true;
     }
 
@@ -95,12 +113,6 @@ public class MainActivity extends AppCompatActivity
             case android.R.id.home:
                 break;
             case R.id.action_search:
-                Intent intent = new Intent(this, com.easylife.letsgo.search.SearchActivity.class);
-
-                startActivity(intent);
-
-                overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
-
                 break;
                 //return super.onOptionsItemSelected(item);
             case R.id.action_settings:

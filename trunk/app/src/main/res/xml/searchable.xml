@@ -6,7 +6,9 @@
 
     android:hint="@string/search_hint"
 
-    android:searchSuggestAuthority="dictionary"
+    android:searchSuggestAuthority="com.easylife.suggestions"
+
+    android:searchSuggestSelection=" ?"
 
     android:searchSuggestIntentAction="android.intent.action.VIEW"
 

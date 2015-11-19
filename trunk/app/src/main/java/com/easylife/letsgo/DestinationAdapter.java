@@ -72,19 +72,14 @@ public class DestinationAdapter
         BitmapDrawable bd = (BitmapDrawable)viewHolder.mImageView.getDrawable();
         Bitmap bmp  = bd.getBitmap();
 
-        final DestinationViewHolder f_viewHolder = viewHolder;
-        Palette.generateAsync(bmp, new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
-                Palette.Swatch swatch = palette.getVibrantSwatch();
-                if (null != swatch) {
-                    f_viewHolder.mCardView.setCardBackgroundColor(swatch.getRgb());
-                    f_viewHolder.mDestTitle.setTextColor(swatch.getTitleTextColor());
-                    f_viewHolder.mDestDesc.setTextColor(swatch.getBodyTextColor());
-                    f_viewHolder.mBtnMore.setTextColor(swatch.getTitleTextColor());
-                }
-            }
-        });
+        Palette palette = Palette.from(bmp).generate();
+        Palette.Swatch swatch = palette.getVibrantSwatch();
+        if (null != swatch) {
+            viewHolder.mCardView.setCardBackgroundColor(swatch.getRgb());
+            viewHolder.mDestTitle.setTextColor(swatch.getTitleTextColor());
+            viewHolder.mDestDesc.setTextColor(swatch.getBodyTextColor());
+            viewHolder.mBtnMore.setTextColor(swatch.getTitleTextColor());
+        }
 
         final int index = i;
 
