@@ -30,4 +30,7 @@
     <string name="fragment_title_contact">Contact</string>
     <string name="no_itinerary">No Itinerary</string>
     <string name="read_more">Read More</string>
+    <string name="search_label">Search Label</string>
+    <string name="search_hint">Search Hint</string>
+    <string name="search_settings_desc">Search Setting Desc</string>
 </resources>

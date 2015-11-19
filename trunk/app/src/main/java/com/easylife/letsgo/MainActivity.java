@@ -1,21 +1,17 @@
 package com.easylife.letsgo;
 
-import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.TabLayout;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -25,9 +21,13 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements StartFragment.OnFragmentInteractionListener,
-        ViewPager.OnPageChangeListener,
+        implements ViewPager.OnPageChangeListener,
         RadioGroup.OnCheckedChangeListener {
+
+
+    private static final String LOG_TAG = "MainActivity";
+
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,13 +53,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(toolbar);
-        //toolbar.setLogo(R.mipmap.ic_launcher);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-        {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -75,11 +70,11 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(this);
 
-        // SlidingTabLayout mTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        // mTabLayout.setViewPager(mViewPager);
-
         mRadioGroup = (RadioGroup) findViewById(R.id.tab_menu);
         mRadioGroup.setOnCheckedChangeListener(this);
+
+        Log.w(LOG_TAG, "Test Log");
+
     }
 
     @Override
@@ -100,7 +95,14 @@ public class MainActivity extends AppCompatActivity
             case android.R.id.home:
                 break;
             case R.id.action_search:
-                return super.onOptionsItemSelected(item);
+                Intent intent = new Intent(this, com.easylife.letsgo.search.SearchActivity.class);
+
+                startActivity(intent);
+
+                overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
+
+                break;
+                //return super.onOptionsItemSelected(item);
             case R.id.action_settings:
                 Toast.makeText(this, "Settings Click", Toast.LENGTH_SHORT).show();
                 break;
@@ -112,11 +114,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         return true;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override
