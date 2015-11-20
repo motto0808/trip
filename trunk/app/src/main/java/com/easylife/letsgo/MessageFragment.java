@@ -53,7 +53,7 @@ public class MessageFragment extends Fragment {
 
         }
     }
-    private RadioGroup mRadioGroup;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
