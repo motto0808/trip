@@ -19,13 +19,14 @@
         android:theme="@style/AppTheme" >
 
         <provider android:name=".search.SearchSuggestionsProvider"
-            android:authorities="com.easylife.suggestions" />
+            android:authorities="com.easylife.suggestions"
+            android:exported="false" />
 
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            android:theme="@style/AppTheme.FullScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

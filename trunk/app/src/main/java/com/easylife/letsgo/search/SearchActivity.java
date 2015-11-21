@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easylife.letsgo.R;
@@ -28,13 +30,18 @@ public class SearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent  = getIntent();
-
+        String query = intent.getStringExtra(SearchManager.QUERY);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
         }
+        else if(Intent.ACTION_VIEW.equals(intent.getAction())){
+            Toast.makeText(this,"By Suggestion", Toast.LENGTH_SHORT).show();
+        }
+
+        TextView textView = (TextView) findViewById(R.id.search_keyword);
+        textView.setText(query);
     }
 
 }
