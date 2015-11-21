@@ -18,6 +18,8 @@ android {
     }
     productFlavors {
     }
+
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -30,4 +32,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.1.0'
 
     compile 'com.facebook.fresco:fresco:0.6.0'
+
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
+    compile 'org.apache.httpcomponents:httpclient:4.5'
 }
