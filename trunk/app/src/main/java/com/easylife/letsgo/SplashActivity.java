@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
                 //两个参数分别表示进入的动画,退出的动画
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            };
+            }
         }.execute(new Void[]{});
     }
 

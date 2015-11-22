@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Indigo 500-->
     <color name="colorPrimary">#3F51B5</color>
+    <!--Indigo 700-->
     <color name="colorPrimaryDark">#303F9F</color>
+
+    <color name="colorPrimaryLight">#C5CAE9</color>
+
+    <!--Pink A200-->
     <color name="colorAccent">#FF4081</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="text_icons">#FFFFFF</color>
 
-    <color name="cardview_dark_background">#0e465c</color>
+    <color name="primaryText">#212121</color>
+    
+    <color name="secondaryText">#727272</color>
+
+    <color name="dividerColor">#B6B6B6</color>
+
+
 </resources>
