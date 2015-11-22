@@ -3,10 +3,12 @@ package com.easylife.letsgo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -50,7 +52,6 @@ public class MessageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mSectionNum = getArguments().getInt(ARG_SECTION_NUMBER);
-
         }
     }
 
@@ -59,10 +60,28 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_message, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.message_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+        //添加背景图片
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.message_black_imageView);
+        imageView.invalidate();
+
+        //添加一个文字说明
+        TextView textView = (TextView) rootView.findViewById(R.id.message_NULL_textView);
+        textView.setText(getString(R.string.message_empty));
+        textView.setGravity(Gravity.CENTER);
+
+        //添加发现探索
+        Button mbutton = (Button) rootView.findViewById(R.id.message_NULL_button);
+        mbutton.setText(getString(R.string.message_btn_empty));
+        
+        /* 新建一个Intent对象 */
+        //Intent intent = new Intent();
+        /* 指定intent要启动的类 */
+        //intent.setClass(this.getActivity(), MessageMainActivity.class);
+        /* 启动一个新的Activity */
+        //startActivity(intent);
+        /* 关闭当前的Activity */
+        //this.getActivity().finish();
         return rootView;
     }
-
-
 }
