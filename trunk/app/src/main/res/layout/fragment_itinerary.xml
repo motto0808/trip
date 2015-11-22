@@ -22,7 +22,7 @@
             android:layout_marginTop="130dp"
             android:text="@string/no_itinerary"
             android:background="@drawable/panel_bg"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
     </RelativeLayout>
 

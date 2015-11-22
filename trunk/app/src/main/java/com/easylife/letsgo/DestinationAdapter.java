@@ -49,7 +49,7 @@ public class DestinationAdapter
     public DestinationViewHolder onCreateViewHolder(ViewGroup viewGroup, int i ) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.destination_card, viewGroup, false);
 
-        DestinationViewHolder viewHolder = new DestinationViewHolder(v, mItemClickListener);
+        DestinationViewHolder viewHolder = new DestinationViewHolder(v);
 
         return viewHolder;
     }
@@ -83,6 +83,7 @@ public class DestinationAdapter
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), String.format("Click CardView%d", index), Toast.LENGTH_SHORT).show();
+                mItemClickListener.onItemClick(v,index);
             }
         });
 
