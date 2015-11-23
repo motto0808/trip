@@ -1,6 +1,7 @@
 package com.easylife.letsgo;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -9,21 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.easylife.letsgo.message.MassageTitleFragment;
+import com.easylife.letsgo.message.MessageContentFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MessageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     // TODO: Rename and change types of parameters
     private int mSectionNum;
+    private LinearLayout mTabWeixin;
+    private LinearLayout mTabFriend;
 
+    private MassageTitleFragment mTitle;
+    private MessageContentFragment mContent;
 
 
     /**
@@ -55,6 +64,7 @@ public class MessageFragment extends Fragment {
         }
     }
 
+    Button mbutton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,17 +81,22 @@ public class MessageFragment extends Fragment {
         textView.setGravity(Gravity.CENTER);
 
         //添加发现探索
-        Button mbutton = (Button) rootView.findViewById(R.id.message_NULL_button);
+        mbutton = (Button) rootView.findViewById(R.id.message_NULL_button);
         mbutton.setText(getString(R.string.message_btn_empty));
-        
-        /* 新建一个Intent对象 */
-        //Intent intent = new Intent();
+        mbutton.setOnClickListener(this);
+
+        return rootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        Intent intent = new Intent();
         /* 指定intent要启动的类 */
-        //intent.setClass(this.getActivity(), MessageMainActivity.class);
+        intent.setClass(getActivity(), com.easylife.letsgo.message.MessageMainActivity.class);
         /* 启动一个新的Activity */
-        //startActivity(intent);
+        startActivity(intent);
         /* 关闭当前的Activity */
         //this.getActivity().finish();
-        return rootView;
     }
 }
