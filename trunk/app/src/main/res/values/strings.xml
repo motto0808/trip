@@ -33,4 +33,9 @@
     <string name="search_label">Search Label</string>
     <string name="search_hint">Search Hint</string>
     <string name="search_settings_desc">Search Setting Desc</string>
+    <string name="title_activity_message_main">MessageMainActivity</string>
+    <!--to do Message string -->
+    <string name="message_empty">还没有收到消息</string>
+    <string name="message_btn_empty">开始探索</string>
+
 </resources>

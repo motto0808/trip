@@ -1,7 +1,6 @@
 package com.easylife.letsgo;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class StartFragment extends Fragment
         }
     }
 
-    private List<DestinationCard> m_destinations = new ArrayList<DestinationCard>();
+    private List<DestinationCard> m_destinations = new ArrayList<>();
     private DestinationAdapter mAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,13 +91,29 @@ public class StartFragment extends Fragment
         // 为mRecyclerView设置适配器
         mRecyclerView.setAdapter(mAdapter);
 
+        final PullToRefreshView pullToRefreshView = (PullToRefreshView)rootView.findViewById(R.id.pull_to_refresh);
+        pullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefreshView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshView.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
+
         return rootView;
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        String tips = String.format("Click love pic%d.", position);
-        Toast.makeText(view.getContext(), tips, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.setClass(getContext(),com.easylife.letsgo.destination.DestinationActivity.class);
+        intent.putExtra(Intent.EXTRA_TITLE, m_destinations.get(position).name);
+
+        getContext().startActivity(intent);
     }
 
     @Override

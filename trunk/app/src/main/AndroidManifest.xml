@@ -9,6 +9,21 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 粗略定位授权 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 精细定位授权 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于读取手机当前的状态-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- SD卡读取权限，用户写入离线定位数据-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
     <application
         android:name=".CrashApplication"
         android:allowBackup="true"
@@ -18,48 +33,64 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <provider android:name=".search.SearchSuggestionsProvider"
-            android:authorities="com.easylife.suggestions" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="gzljHp5aeonCxAdhhmb2yeBG" />
+
+        <provider
+            android:name=".search.SearchSuggestionsProvider"
+            android:authorities="com.easylife.suggestions"
+            android:exported="false" />
 
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            android:theme="@style/AppTheme.FullScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
-
-            <meta-data android:name="android.app.default_searchable"
+            <meta-data
+                android:name="android.app.default_searchable"
                 android:value=".search.SearchActivity" />
-
         </activity>
-
         <activity
             android:name=".search.SearchActivity"
-            android:parentActivityName=".MainActivity"
             android:label="Search"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".destination.DestinationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 

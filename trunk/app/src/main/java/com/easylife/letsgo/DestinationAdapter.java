@@ -2,16 +2,12 @@ package com.easylife.letsgo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -53,7 +49,7 @@ public class DestinationAdapter
     public DestinationViewHolder onCreateViewHolder(ViewGroup viewGroup, int i ) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.destination_card, viewGroup, false);
 
-        DestinationViewHolder viewHolder = new DestinationViewHolder(v, mItemClickListener);
+        DestinationViewHolder viewHolder = new DestinationViewHolder(v);
 
         return viewHolder;
     }
@@ -87,6 +83,7 @@ public class DestinationAdapter
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), String.format("Click CardView%d", index), Toast.LENGTH_SHORT).show();
+                mItemClickListener.onItemClick(v,index);
             }
         });
 

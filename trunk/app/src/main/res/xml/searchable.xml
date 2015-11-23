@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:label="@string/search_label"
 
     android:hint="@string/search_hint"
+
+    android:imeOptions="actionSearch"
 
     android:searchSuggestAuthority="com.easylife.suggestions"
 
@@ -14,6 +15,7 @@
 
     android:includeInGlobalSearch="true"
 
-    android:searchSettingsDescription="@string/search_settings_desc" >
+    android:searchSettingsDescription="@string/search_settings_desc"
 
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" >
 </searchable>

@@ -27,12 +27,16 @@ package com.easylife.letsgo;
         import android.util.Log;
         import android.widget.Toast;
 
+        import static java.text.DateFormat.getDateTimeInstance;
+
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
  *
  * @author user
  *
  */
+
+
 public class CrashHandler implements UncaughtExceptionHandler {
 
     public static final String TAG = "CrashHandler";
@@ -44,10 +48,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
     //程序的Context对象
     private Context mContext;
     //用来存储设备信息和异常信息
-    private Map<String, String> infos = new HashMap<String, String>();
+    private Map<String, String> infos = new HashMap<>();
 
     //用于格式化日期,作为日志文件名的一部分
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    private DateFormat formatter = getDateTimeInstance();
 
     /** 保证只有一个CrashHandler实例 */
     private CrashHandler() {
@@ -154,11 +158,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     private String saveCrashInfo2File(Throwable ex) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : infos.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            sb.append(key + "=" + value + "\n");
+            sb.append(entry.getKey());
+            sb.append("=");
+            sb.append(entry.getValue());
+            sb.append("\n");
         }
 
         Writer writer = new StringWriter();
@@ -177,7 +182,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = "/sdcard/crash/";
+                String path = Environment.getExternalStorageDirectory().getPath() + "crash/";
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -188,7 +193,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
             return fileName;
         } catch (Exception e) {
-            Log.e(TAG, "an error occured while writing file...", e);
+            Log.e(TAG, "an error occurred while writing file...", e);
         }
         return null;
     }
