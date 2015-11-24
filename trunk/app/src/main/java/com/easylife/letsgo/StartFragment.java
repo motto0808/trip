@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.easylife.letsgo.message.MessageMainActivity;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
@@ -110,7 +111,8 @@ public class StartFragment extends Fragment
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent();
-        intent.setClass(getContext(),com.easylife.letsgo.destination.DestinationActivity.class);
+       // intent.setClass(getContext(),com.easylife.letsgo.destination.DestinationActivity.class);
+        intent.setClass(getContext(), MessageMainActivity.class);
         intent.putExtra(Intent.EXTRA_TITLE, m_destinations.get(position).name);
 
         getContext().startActivity(intent);

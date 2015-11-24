@@ -1,11 +1,11 @@
 package com.easylife.letsgo.message;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.easylife.letsgo.R;
 
-public class MessageMainActivity extends Activity {
+public class MessageMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
