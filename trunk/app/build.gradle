@@ -9,6 +9,13 @@ android {
             storePassword 'motto0808'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
     defaultConfig {
