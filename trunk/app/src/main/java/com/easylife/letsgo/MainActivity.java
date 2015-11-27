@@ -2,29 +2,25 @@ package com.easylife.letsgo;
 
 import android.app.SearchManager;
 import android.content.Context;
-
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
 import android.widget.RadioGroup;
-
-
-import android.support.v7.widget.SearchView;
 import android.widget.Toast;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener,
@@ -57,7 +53,30 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ///测试单聊
+        //Token 用户访问令牌
+        String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw==";
+        /**
+         * IMKit SDK调用第二步
+         * 建立与服务器的连接
+         */
+        RongIM.connect(Token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                //Connect Token 失效的状态处理，需要重新获取 Token
+            }
 
+            @Override
+            public void onSuccess(String userId) {
+                //Log.e(“MainActivity”, “——onSuccess—-” + userId);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                //Log.e(“MainActivity”, “——onError—-” + errorCode);
+            }
+        });
+        /*----------------------------------------------------------------------------------------*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -127,6 +146,20 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sign_out:
                 finish();
                 break;
+            case R.id.message_NULL_button:
+            {
+                /**
+                 * 启动单聊
+                 * context - 应用上下文。
+                 * targetUserId - 要与之聊天的用户 Id。
+                 * title - 聊天的标题，如果传入空值，则默认显示与之聊天的用户名称。
+                 */
+                if (RongIM.getInstance() != null) {
+                    RongIM.getInstance().startPrivateChat(MainActivity.this, "2462", "hello");
+                }
+
+                return super.onOptionsItemSelected(item);
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }

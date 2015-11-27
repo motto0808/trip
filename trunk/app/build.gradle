@@ -49,4 +49,5 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.yalantis:phoenix:1.2.2'
     compile files('libs/BaiduLBS_Android.jar')
+    compile project(':IMKit')
 }
