@@ -2,6 +2,7 @@ package com.easylife.letsgo;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,8 +20,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener,
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private List<Fragment> mPageFragment = new ArrayList<>();
 
+    private ConversationListFragment m_conversation_list;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -55,7 +61,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ///测试单聊
         //Token 用户访问令牌
-        String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw==";
+		String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw=="; 
+
         /**
          * IMKit SDK调用第二步
          * 建立与服务器的连接
@@ -63,17 +70,17 @@ public class MainActivity extends AppCompatActivity
         RongIM.connect(Token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
-                //Connect Token 失效的状态处理，需要重新获取 Token
+                Log.e(LOG_TAG, "------onTokenIncorrect----");
             }
 
             @Override
             public void onSuccess(String userId) {
-                //Log.e(“MainActivity”, “——onSuccess—-” + userId);
+                Log.e(LOG_TAG, "------onSuccess----" + userId);
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                //Log.e(“MainActivity”, “——onError—-” + errorCode);
+                Log.e(LOG_TAG, "------onError----" + errorCode);
             }
         });
         /*----------------------------------------------------------------------------------------*/
@@ -82,9 +89,24 @@ public class MainActivity extends AppCompatActivity
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mPageFragment.add(StartFragment.newInstance(1));
+        mPageFragment.add(StartFragment.newInstance());
         mPageFragment.add(ItineraryFragment.newInstance(2));
-        mPageFragment.add(MessageFragment.newInstance(3));
+        //mPageFragment.add(MessageFragment.newInstance(3));
+
+        m_conversation_list = ConversationListFragment.getInstance();
+        m_conversation_list.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
+        Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                .appendPath("conversationlist")
+                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
+                .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")//讨论组
+                .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
+                .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
+                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
+                .build();
+        m_conversation_list.setUri(uri);
+
+        mPageFragment.add(m_conversation_list);
         mPageFragment.add(ContactFragment.newInstance(4));
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(mPageFragment, getSupportFragmentManager());
@@ -96,9 +118,6 @@ public class MainActivity extends AppCompatActivity
 
         mRadioGroup = (RadioGroup) findViewById(R.id.tab_menu);
         mRadioGroup.setOnCheckedChangeListener(this);
-
-        Log.w(LOG_TAG, "Test Log");
-
     }
 
     @Override

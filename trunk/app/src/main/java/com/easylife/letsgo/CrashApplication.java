@@ -7,6 +7,9 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+
 public class CrashApplication extends Application {
     @Override
     public void onCreate() {
@@ -16,5 +19,7 @@ public class CrashApplication extends Application {
 
 
         Fresco.initialize(this);
+
+        RongIM.init(this);
     }
 }

@@ -1,7 +1,6 @@
 package com.easylife.letsgo;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 
 import com.easylife.letsgo.message.MassageTitleFragment;
 import com.easylife.letsgo.message.MessageContentFragment;
+
+import io.rong.imkit.RongIM;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +34,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
 
     private MassageTitleFragment mTitle;
     private MessageContentFragment mContent;
-
 
     /**
      * Use this factory method to create a new instance of
@@ -90,13 +90,13 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
+/*
         Intent intent = new Intent();
-        /* 指定intent要启动的类 */
+
         intent.setClass(getActivity(), com.easylife.letsgo.message.MessageMainActivity.class);
-        /* 启动一个新的Activity */
+
         startActivity(intent);
-        /* 关闭当前的Activity */
-        //this.getActivity().finish();
+*/
+        RongIM.getInstance().startPrivateChat(getActivity(), "2462", "hello");
     }
 }

@@ -27,27 +27,15 @@ import java.util.List;
 public class StartFragment extends Fragment
     implements DestinationAdapter.OnItemClickListener
 {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
-    // TODO: Rename and change types of parameters
-    private int mSectionNum;
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param section_number Parameter 1.
      * @return A new instance of fragment StartFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StartFragment newInstance(int section_number) {
-        StartFragment fragment = new StartFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, section_number);
-        fragment.setArguments(args);
-        return fragment;
+    public static StartFragment newInstance() {
+        return new StartFragment();
     }
 
     public StartFragment() {
@@ -57,9 +45,6 @@ public class StartFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mSectionNum = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
     }
 
     private List<DestinationCard> m_destinations = new ArrayList<>();
