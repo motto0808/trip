@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity
         // primary sections of the activity.
         mPageFragment.add(StartFragment.newInstance());
         mPageFragment.add(ItineraryFragment.newInstance(2));
-        //mPageFragment.add(MessageFragment.newInstance(3));
 
         m_conversation_list = ConversationListFragment.getInstance();
         m_conversation_list.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
@@ -165,20 +164,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sign_out:
                 finish();
                 break;
-            case R.id.message_NULL_button:
-            {
-                /**
-                 * 启动单聊
-                 * context - 应用上下文。
-                 * targetUserId - 要与之聊天的用户 Id。
-                 * title - 聊天的标题，如果传入空值，则默认显示与之聊天的用户名称。
-                 */
-                if (RongIM.getInstance() != null) {
-                    RongIM.getInstance().startPrivateChat(MainActivity.this, "2462", "hello");
-                }
-
-                return super.onOptionsItemSelected(item);
-            }
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +25,19 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.easylife.letsgo.ui.widget.EditTextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +47,11 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity
+        implements View.OnClickListener,
+        Handler.Callback,
+        LoaderCallbacks<Cursor>,
+        EditTextHolder.OnEditTextFocusChangeListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -52,26 +65,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
+    private int HANDLER_LOGIN_SUCCESS = 1;
+    private int HANDLER_LOGIN_FAILURE = 2;
+    private int HANDLER_LOGIN_HAS_FOCUS = 3;
+    private int HANDLER_LOGIN_HAS_NO_FOCUS = 4;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    /**
+     * 用户账户
+     */
+    private AutoCompleteTextView mEmailView;
+    /**
+     * 密码
+     */
+    private EditText mPasswordView;
+
+    /**
+     * 输入用户名删除按钮
+     */
+    private FrameLayout mFrUserNameDelete;
+    /**
+     * 输入密码删除按钮
+     */
+    private FrameLayout mFrPasswordDelete;
+
+    /**
+     * 背景图
+     */
+    private ImageView mImgBackgroud;
+
+    EditTextHolder mEditUserNameEt;
+    EditTextHolder mEditPassWordEt;
+
+
+
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_et_email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.login_et_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -84,15 +130,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(this);
+
+        findViewById(R.id.login_tv_forgot).setOnClickListener(this);
+        findViewById(R.id.login_tv_sign_up).setOnClickListener(this);
+
+        mImgBackgroud = (ImageView) findViewById(R.id.login_img_backgroud);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        mFrUserNameDelete = (FrameLayout) findViewById(R.id.fr_username_delete);
+        mFrPasswordDelete = (FrameLayout) findViewById(R.id.fr_password_delete);
+
+        //下面的代码为 EditTextView 的展示以及背景动画
+        mEditUserNameEt = new EditTextHolder(mEmailView, mFrUserNameDelete, null);
+        mEditPassWordEt = new EditTextHolder(mPasswordView, mFrPasswordDelete, null);
+        mHandler = new Handler(this);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.translate_backgroud);
+                mImgBackgroud.startAnimation(animation);
+                mEditPassWordEt.setmOnEditTextFocusChangeListener(LoginActivity.this);
+                mEditUserNameEt.setmOnEditTextFocusChangeListener(LoginActivity.this);
+            }
+        }, 200);
     }
 
     private void populateAutoComplete() {
@@ -269,6 +332,64 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg.what == HANDLER_LOGIN_FAILURE) {
+
+
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else if (msg.what == HANDLER_LOGIN_SUCCESS) {
+
+
+
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else if (msg.what == HANDLER_LOGIN_HAS_FOCUS) {
+
+        } else if (msg.what == HANDLER_LOGIN_HAS_NO_FOCUS) {
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onEditTextFocusChange(View v, boolean hasFocus) {
+        Message mess = Message.obtain();
+        switch (v.getId()) {
+            case R.id.login_et_email:
+            case R.id.login_et_password:
+                if (hasFocus) {
+                    mess.what = HANDLER_LOGIN_HAS_FOCUS;
+                }
+                mHandler.sendMessage(mess);
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.email_sign_in_button:
+                attemptLogin();
+                break;
+            case R.id.login_et_email:
+            case R.id.login_et_password:
+                Message msg = Message.obtain();
+                msg.what = HANDLER_LOGIN_HAS_FOCUS;
+                mHandler.sendMessage(msg);
+                break;
+
+            case R.id.login_tv_forgot:
+                Toast.makeText(this,"Forgot password", Toast.LENGTH_SHORT);
+                break;
+            case R.id.login_tv_sign_up:
+                Toast.makeText(this,"Sign up", Toast.LENGTH_SHORT);
+                break;
+        }
     }
 
     private interface ProfileQuery {

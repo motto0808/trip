@@ -25,7 +25,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/rc_rt_location_bar" />
+            android:src="@mipmap/rc_rt_location_bar" />
 
         <TextView
             android:id="@android:id/text1"
@@ -43,15 +43,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:src="@drawable/rc_rt_location_arrow" />
+            android:src="@mipmap/rc_rt_location_arrow" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/de_bg"
-        android:visibility="gone" />
 
 </FrameLayout>

@@ -27,4 +27,28 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+
+
+    <!-- big black-->
+    <style name="TextStyleBig1">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+    </style>
+    <!-- big black-->
+    <style name="TextStyleBigBlack">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+    </style>
+    <!-- small gray-->
+    <style name="TextStyleSmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_icons</item>
+    </style>
+
+    <!-- middle gray-->
+    <style name="TextStyleMiddle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_icons</item>
+    </style>
+
 </resources>
