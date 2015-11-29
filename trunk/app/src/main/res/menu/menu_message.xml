@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/add_new_message"
+        android:title="Message"
+        android:icon="@android:drawable/ic_input_add"
+        android:showAsAction="ifRoom|withText">
+
+        <menu>
+            <item
+                android:id="@+id/action_add_groupchat"
+                android:icon="@android:drawable/ic_input_add"
+                android:showAsAction="always|withText"
+                android:title="发起群聊"/>
+            <item
+                android:id="@+id/action_add_friends"
+                android:icon="@android:drawable/ic_input_add"
+                android:showAsAction="always|withText"
+                android:title="添加好友"/>
+        </menu>
+    </item>
+</menu>
