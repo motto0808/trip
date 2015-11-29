@@ -25,6 +25,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 
 public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener,
@@ -55,35 +56,21 @@ public class MainActivity extends AppCompatActivity
 
     private RadioGroup mRadioGroup;
 
+    private String mUserId;
+    //Token 用户访问令牌
+    private static final String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw==";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ///测试单聊
-        //Token 用户访问令牌
-		String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw=="; 
-
+        //服务器建立连接
         /**
          * IMKit SDK调用第二步
          * 建立与服务器的连接
          */
-        RongIM.connect(Token, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                Log.e(LOG_TAG, "------onTokenIncorrect----");
-            }
+        connectRongServer(Token);
 
-            @Override
-            public void onSuccess(String userId) {
-                Log.e(LOG_TAG, "------onSuccess----" + userId);
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.e(LOG_TAG, "------onError----" + errorCode);
-            }
-        });
-        /*----------------------------------------------------------------------------------------*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -164,6 +151,24 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sign_out:
                 finish();
                 break;
+            case R.id.add_new_message:
+            {
+                /**
+                 * 启动客服聊天界面。
+                 *
+                 * @param context          应用上下文。
+                 * @param conversationType 开启会话类型。
+                 * @param targetId         客服 Id。
+                 * @param title            客服标题。
+                 */
+                RongIM.getInstance().startConversation(MainActivity.this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU144879668568541", "客服");
+
+               // if (mUserId != null && RongIM.getInstance() != null)
+                //此处聊天是写死的 实际开发中 大家应该写成动态的startPrivateChat
+                  //  RongIM.getInstance().startPrivateChat(MainActivity.this, mUserId.equals("10010") ? "10086" : "10010", mUserId.equals("10010") ? "移动" : "联通");
+
+            }
+            break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -260,4 +265,39 @@ public class MainActivity extends AppCompatActivity
             return null;
         }
     }
+    /**
+     * 连接融云服务器
+     *
+     * @param token
+     */
+    private void connectRongServer(String token) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+
+            @Override
+            public void onSuccess(String userId) {
+                mUserId = userId;
+                    Toast.makeText(MainActivity.this, "connet server success",
+                            Toast.LENGTH_SHORT).show();
+                 //
+                Log.e(LOG_TAG, "connect success userid is :" + userId);
+
+                // 默认设置头像
+                if(RongIM.getInstance() != null) {
+                    RongIM.getInstance().setCurrentUserInfo(new UserInfo("10010", "曾经故人", Uri.parse("http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"))
+                    );
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e(LOG_TAG,
+                        "connect failure errorCode is :" + errorCode.getValue());
+            }
+            @Override
+            public void onTokenIncorrect() {
+                Log.e(LOG_TAG, "token is error , please check token and appkey ");
+            }
+        });
+    }
+
 }
