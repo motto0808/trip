@@ -20,8 +20,6 @@ public class ItineraryFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int mSectionNum;
 
-
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

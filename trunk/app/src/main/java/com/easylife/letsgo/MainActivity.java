@@ -2,6 +2,7 @@ package com.easylife.letsgo;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,11 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener,
         RadioGroup.OnCheckedChangeListener {
 
-
     private static final String LOG_TAG = "MainActivity";
-
-
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -215,7 +212,11 @@ public class MainActivity extends AppCompatActivity
                 mViewPager.setCurrentItem(1);
                 break;
             case R.id.tab_rb_message:
-                mViewPager.setCurrentItem(2);
+            {
+                Intent intent = new Intent(this,ConversationListActivity.class);
+                startActivity(intent);
+               // mViewPager.setCurrentItem(2);
+            }
                 break;
             case R.id.tab_rb_contact:
                 mViewPager.setCurrentItem(3);
