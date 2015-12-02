@@ -1,7 +1,6 @@
 package com.easylife.letsgo.search;
 
 import android.app.SearchManager;
-import android.os.Handler;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -9,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.easylife.letsgo.LocationUtil;
+import com.easylife.letsgo.utils.LocationUtil;
 import com.easylife.letsgo.R;
 
 public class SearchActivity extends AppCompatActivity implements LocationUtil.LocationListener{

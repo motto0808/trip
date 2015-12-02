@@ -1,4 +1,4 @@
-package com.easylife.letsgo;
+package com.easylife.letsgo.utils;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

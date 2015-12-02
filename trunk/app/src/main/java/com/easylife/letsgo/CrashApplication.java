@@ -21,5 +21,6 @@ public class CrashApplication extends Application {
         Fresco.initialize(this);
 
         RongIM.init(this);
+        AppContext.init(this);
     }
 }

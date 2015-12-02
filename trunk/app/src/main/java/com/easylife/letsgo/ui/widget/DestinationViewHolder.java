@@ -1,4 +1,4 @@
-package com.easylife.letsgo;
+package com.easylife.letsgo.ui.widget;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.easylife.letsgo.R;
 
 /**
  * Created by xtgsy on 2015/11/17.

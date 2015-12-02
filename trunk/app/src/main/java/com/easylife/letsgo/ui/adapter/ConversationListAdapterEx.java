@@ -1,4 +1,4 @@
-package com.easylife.letsgo;
+package com.easylife.letsgo.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
