@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.easylife.letsgo.message.MessageMainActivity;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
