@@ -2,12 +2,14 @@ package com.easylife.letsgo.ui.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,10 +18,10 @@ import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.easylife.letsgo.ui.fragment.ContactFragment;
-import com.easylife.letsgo.ui.adapter.ConversationListAdapterEx;
-import com.easylife.letsgo.ui.fragment.ItineraryFragment;
 import com.easylife.letsgo.R;
+import com.easylife.letsgo.ui.adapter.ConversationListAdapterEx;
+import com.easylife.letsgo.ui.fragment.ContactFragment;
+import com.easylife.letsgo.ui.fragment.ItineraryFragment;
 import com.easylife.letsgo.ui.fragment.StartFragment;
 
 import java.util.ArrayList;
@@ -36,11 +38,7 @@ public class MainActivity extends BaseActivity
         implements ViewPager.OnPageChangeListener,
         RadioGroup.OnCheckedChangeListener {
 
-
     private static final String LOG_TAG = "MainActivity";
-
-
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -220,7 +218,11 @@ public class MainActivity extends BaseActivity
                 mViewPager.setCurrentItem(1);
                 break;
             case R.id.tab_rb_message:
-                mViewPager.setCurrentItem(2);
+            {
+                Intent intent = new Intent(this,ConversationListActivity.class);
+                startActivity(intent);
+               // mViewPager.setCurrentItem(2);
+            }
                 break;
             case R.id.tab_rb_contact:
                 mViewPager.setCurrentItem(3);

@@ -28,7 +28,6 @@
     </style>
 
 
-
     <!-- big black-->
     <style name="TextStyleBig1">
         <item name="android:textSize">18sp</item>

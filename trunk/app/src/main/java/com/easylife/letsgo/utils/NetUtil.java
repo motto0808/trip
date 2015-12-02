@@ -1,28 +1,13 @@
 package com.easylife.letsgo.utils;
 
-import android.content.SharedPreferences;
-import android.text.TextUtils;
+
 import android.util.Log;
 
 import com.easylife.letsgo.AppContext;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * @Package com.easylife.letsgo.utils
@@ -31,7 +16,7 @@ import java.util.Map;
  * @Date 2015/12/2
  */
 public class NetUtil {
-    private static HttpClient httpClient = new DefaultHttpClient();
+    private static String Tag = "NetUtil";
     private static final String BASE_URL = "http://192.168.1.2:8080/";
 
 
@@ -42,84 +27,29 @@ public class NetUtil {
      * @return 响应的数据
      */
     public static String sendGetRequest(String requestUrl) {
-        HttpGet httpGet = new HttpGet(BASE_URL + requestUrl);
-        if (AppContext.getInstance().getSharedPreferences() != null) {
-            httpGet.addHeader("cookie", AppContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
-        } else {
-            Log.e("", "0313----yb DEMO_COOKIE  null ----:");
-        }
         try {
-            HttpResponse response = httpClient.execute(httpGet);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-//                response.addHeader("cookie", DemoContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
-                getCookie(httpClient);
-//                return entity.getContent();  //当需要返回为输入流InputStream时的返回值
-                return EntityUtils.toString(entity); // 当返回的类型为Json数据时，调用此返回方法
+            URL url = new URL(BASE_URL + requestUrl);
+            URLConnection urlConnection = url.openConnection();
+
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) urlConnection;
+            httpUrlConnection.setDoInput(true);
+            httpUrlConnection.setRequestMethod("Get");
+
+            if (AppContext.getInstance().getSharedPreferences() != null) {
+                httpUrlConnection.addRequestProperty("COOKIE", AppContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
+            } else {
+                Log.e(Tag, "DEMO_COOKIE  null ----:");
             }
+
+            httpUrlConnection.connect();
+
+            InputStream is = httpUrlConnection.getInputStream();
+
+            return StringUtil.convertStreamToString(is);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 发送post请求
-     *
-     * @param requestUrl 请求的URL
-     * @param params     请求的参数
-     * @return 响应的数据
-     */
-    public static String sendPostRequest(String requestUrl, Map<String, String> params) {
-
-        HttpPost httpPost = new HttpPost(BASE_URL + requestUrl);
-        if (AppContext.getInstance().getSharedPreferences() != null) {
-            httpPost.addHeader("cookie", AppContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
-        }
-        try {
-            if (params != null && params.size() > 0) {
-                List<NameValuePair> paramLists = new ArrayList<NameValuePair>();
-                for (Map.Entry<String, String> map : params.entrySet()) {
-                    paramLists.add(new BasicNameValuePair(map.getKey(), map.getValue()));
-                }
-                httpPost.setEntity(new UrlEncodedFormEntity(paramLists, "UTF-8"));
-            }
-            HttpResponse response = httpClient.execute(httpPost);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-//                response.addHeader("cookie", DemoContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
-
-                getCookie(httpClient);
-//                return entity.getContent();  //当需要返回为输入流InputStream时的返回值
-                return EntityUtils.toString(entity);
-            }
-        } catch (Exception e) {
-            System.out.println(BASE_URL + requestUrl);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获得cookie
-     *
-     * @param httpClient
-     */
-    public static void getCookie(HttpClient httpClient) {
-        List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < cookies.size(); i++) {
-            Cookie cookie = cookies.get(i);
-            String cookieName = cookie.getName();
-            String cookieValue = cookie.getValue();
-            if (!TextUtils.isEmpty(cookieName)
-                    && !TextUtils.isEmpty(cookieValue)) {
-                sb.append(cookieName + "=");
-                sb.append(cookieValue + ";");
-            }
-        }
-        SharedPreferences.Editor edit = AppContext.getInstance().getSharedPreferences().edit();
-        edit.putString("DEMO_COOKIE", sb.toString());
-        edit.apply();
     }
 }

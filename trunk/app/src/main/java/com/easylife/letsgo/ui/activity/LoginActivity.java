@@ -389,7 +389,7 @@ public class LoginActivity extends BaseActivity
                 Toast.makeText(this,"Forgot password", Toast.LENGTH_SHORT);
                 break;
             case R.id.login_tv_sign_up:
-                Toast.makeText(this, "Sign up", Toast.LENGTH_SHORT);
+                startActivity(new Intent(this, RegisterActivity.class));
 
                 break;
         }
@@ -448,8 +448,15 @@ public class LoginActivity extends BaseActivity
                 String req = String.format("v1/user/login?username=%s&password=%s", mEmail, mPassword);
 
                 String s_body = NetUtil.sendGetRequest(req);
+                if(s_body != null)
+                {
+                    Log.d(Tag, s_body);
+                }
+                else
+                {
+                    Log.e(Tag, "Login Error");
+                }
 
-                Log.d(Tag, s_body);
 
             } catch (IllegalArgumentException e){
                 return false;

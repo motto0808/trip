@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.easylife.letsgo" >
+    package="com.easylife.letsgo">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -37,12 +37,11 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
-        </service>
+            android:process=":remote"></service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -57,7 +56,7 @@
             android:name=".ui.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
-            android:theme="@style/AppTheme.FullScreen" >
+            android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,12 +68,11 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".search.SearchActivity" />
@@ -82,7 +80,7 @@
         <activity
             android:name=".search.SearchActivity"
             android:label="Search"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -96,7 +94,7 @@
         </activity>
         <activity
             android:name=".destination.DestinationActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
@@ -107,7 +105,7 @@
         <!-- begin rongcloud -->
         <activity
             android:name="io.rong.voipkit.activity.CallSideActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -122,7 +120,7 @@
         <activity
             android:name="io.rong.voipkit.activity.CalledSideActivity"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -141,7 +139,7 @@
         <service android:name="io.rong.imlib.ReConnectService" />
 
         <receiver android:name="io.rong.imlib.ConnectChangeReceiver" />
-        <receiver android:name="io.rong.imlib.ipc.PushMessageReceiver" >
+        <receiver android:name="io.rong.imlib.ipc.PushMessageReceiver">
             <intent-filter>
                 <action android:name="io.rong.push.message" />
             </intent-filter>
@@ -166,7 +164,7 @@
 
         <service
             android:name="io.rong.push.PushService"
-            android:process="io.rong.push" > <!-- Waring: The name of the push process can't be changed!!! -->
+            android:process="io.rong.push"> <!-- Waring: The name of the push process can't be changed!!! -->
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -175,7 +173,7 @@
         </service>
         <service
             android:name="io.rong.push.CommandService"
-            android:process="io.rong.push" > <!-- Waring: The name of the push process can't be changed!!! -->
+            android:process="io.rong.push"> <!-- Waring: The name of the push process can't be changed!!! -->
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -185,7 +183,7 @@
 
         <receiver
             android:name="io.rong.push.PushReceiver"
-            android:process="io.rong.push" > <!-- Waring: The name of the push process can't be changed!!! -->
+            android:process="io.rong.push"> <!-- Waring: The name of the push process can't be changed!!! -->
             <intent-filter>
                 <action android:name="io.rong.push.HeartBeat" />
             </intent-filter>
@@ -212,7 +210,7 @@
             android:value="kj7swf8o76oc2" />
 
         <!-- end rongcloud -->
-        <activity android:name=".ui.activity.ConversationActivity" >
+        <activity android:name=".ui.activity.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -224,8 +222,11 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConversationListActivity" >
-        </activity>
+        <activity android:name=".ui.activity.ConversationListActivity"></activity>
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
