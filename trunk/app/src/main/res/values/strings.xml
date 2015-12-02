@@ -39,6 +39,7 @@
     <string name="message_empty">还没有收到消息</string>
     <string name="message_btn_empty">开始探索</string>
     <string name="action_forget_password">Forget password</string>
+    <string name="menu_new_message">Message</string>
 
 
 </resources>
