@@ -57,4 +57,4 @@
         android:src="@drawable/rc_ic_message_block"
         android:visibility="gone" />
 
-</RelativeLayout><!-- From: file:/E:/github_space/trip/trunk/IMKit/src/main/res/layout/rc_item_base_conversation.xml -->
+</RelativeLayout><!-- From: file:/E:/Trip/trip/trunk/IMKit/src/main/res/layout/rc_item_base_conversation.xml -->

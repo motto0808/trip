@@ -40,4 +40,4 @@
         android:layout_marginLeft="10dp"
         android:src="@drawable/rc_voice_unread"/>
 
-</LinearLayout><!-- From: file:/E:/github_space/trip/trunk/IMKit/src/main/res/layout/rc_item_voice_message.xml -->
+</LinearLayout><!-- From: file:/E:/Trip/trip/trunk/IMKit/src/main/res/layout/rc_item_voice_message.xml -->
