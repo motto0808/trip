@@ -1,13 +1,17 @@
 package com.easylife.letsgo;
 
+import android.annotation.TargetApi;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -24,7 +28,6 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -39,6 +42,14 @@ import android.widget.Toast;
 
 import com.easylife.letsgo.ui.widget.EditTextHolder;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,14 +68,6 @@ public class LoginActivity extends AppCompatActivity
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
 
     private int HANDLER_LOGIN_SUCCESS = 1;
     private int HANDLER_LOGIN_FAILURE = 2;
@@ -100,12 +103,10 @@ public class LoginActivity extends AppCompatActivity
     /**
      * 背景图
      */
-    private ImageView mImgBackgroud;
+    private ImageView mImgBackground;
 
     EditTextHolder mEditUserNameEt;
     EditTextHolder mEditPassWordEt;
-
-
 
     private Handler mHandler;
 
@@ -135,7 +136,7 @@ public class LoginActivity extends AppCompatActivity
         findViewById(R.id.login_tv_forgot).setOnClickListener(this);
         findViewById(R.id.login_tv_sign_up).setOnClickListener(this);
 
-        mImgBackgroud = (ImageView) findViewById(R.id.login_img_backgroud);
+        mImgBackground = (ImageView) findViewById(R.id.login_img_backgroud);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -151,7 +152,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void run() {
                 Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.translate_backgroud);
-                mImgBackgroud.startAnimation(animation);
+                mImgBackground.startAnimation(animation);
                 mEditPassWordEt.setmOnEditTextFocusChangeListener(LoginActivity.this);
                 mEditUserNameEt.setmOnEditTextFocusChangeListener(LoginActivity.this);
             }
@@ -201,7 +202,6 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -217,8 +217,8 @@ public class LoginActivity extends AppCompatActivity
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = "sunest@163.com";//mEmailView.getText().toString();
-        String password = "22222222";//mPasswordView.getText().toString();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -337,12 +337,9 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == HANDLER_LOGIN_FAILURE) {
-
-
             startActivity(new Intent(this, MainActivity.class));
             finish();
         } else if (msg.what == HANDLER_LOGIN_SUCCESS) {
-
 
 
             startActivity(new Intent(this, MainActivity.class));
@@ -387,7 +384,8 @@ public class LoginActivity extends AppCompatActivity
                 Toast.makeText(this,"Forgot password", Toast.LENGTH_SHORT);
                 break;
             case R.id.login_tv_sign_up:
-                Toast.makeText(this,"Sign up", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Sign up", Toast.LENGTH_SHORT);
+
                 break;
         }
     }
@@ -402,7 +400,6 @@ public class LoginActivity extends AppCompatActivity
         int IS_PRIMARY = 1;
     }
 
-
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -410,6 +407,15 @@ public class LoginActivity extends AppCompatActivity
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
+    }
+
+    public enum LoginResult{
+        LoginSuccess,
+        LoginNoUser,
+        LoginInvalidUsername,
+        LoginInvalidPassword,
+        LoginWrongPassword,
+        LoginInnerError,
     }
 
     /**
@@ -420,32 +426,35 @@ public class LoginActivity extends AppCompatActivity
 
         private final String mEmail;
         private final String mPassword;
+        private final LoginResult mLoginResult;
+
 
         UserLoginTask(String email, String password) {
             mEmail = email;
-            mPassword = password;
+            mPassword = StringUtil.getMD5(password);
+            mLoginResult = LoginResult.LoginSuccess;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             try {
                 // Simulate network access.
+                String path =String.format("http://127.0.0.1:8080/user?username=%s&&password=%s", mEmail, mPassword);
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpGet request = new HttpGet(path);
+                request.addHeader("Accept", "text/plain");
+                HttpResponse response = httpclient.execute(request);
+                HttpEntity entity = response.getEntity();
+                InputStream instream = entity.getContent();
+
+                // TODO: parse json object
+
                 Thread.sleep(1000);
+            } catch (IOException e){
+                return  false;
             } catch (InterruptedException e) {
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -455,13 +464,38 @@ public class LoginActivity extends AppCompatActivity
             showProgress(false);
 
             if (success) {
+                switch (mLoginResult)
+                {
+                    case LoginSuccess:
+                        //TODO 保存当前的用户名和密码
+                        SharedPreferences sp = getSharedPreferences("LoginData", MODE_PRIVATE);
+                        sp.edit().putString("Username", mEmail);
+                        sp.edit().putString("Password", mPassword);
+                        Intent it = new Intent();
+                        it.setClass(LoginActivity.this, MainActivity.class);
+                        startActivity(it);
+                        finish();
+                        break;
+                    case LoginNoUser:
+                        mEmailView.setError(getString(R.string.error_no_username));
+                        break;
+                    case LoginWrongPassword:
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                        break;
+                    case LoginInnerError:
+                        Snackbar.make(mEmailView,"Server Inner Error",Snackbar.LENGTH_SHORT).show();
+                        break;
+                }
+
+            } else {
+                //网络异常
+                Snackbar.make(mEmailView,"Network Error",Snackbar.LENGTH_SHORT).show();
+
                 Intent it = new Intent();
                 it.setClass(LoginActivity.this, MainActivity.class);
                 startActivity(it);
                 finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 
