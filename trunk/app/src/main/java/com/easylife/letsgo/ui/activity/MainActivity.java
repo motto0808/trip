@@ -9,13 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.easylife.letsgo.R;
@@ -63,6 +63,14 @@ public class MainActivity extends BaseActivity
     //Token 用户访问令牌
     private static final String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw==";
 
+    //tab 切换
+    private TabHost tabHost;
+
+    private Intent mainIntent;
+    private Intent tripIntent;
+    private Intent messageIntent;
+    private Intent contractIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +81,18 @@ public class MainActivity extends BaseActivity
          * 建立与服务器的连接
          */
         connectRongServer(Token);
+
+        //加载页面
+       /* tabHost = (TabHost) findViewById(R.id.my_tabhost);
+        LocalActivityManager groupActivity =
+                new LocalActivityManager(this,false);
+        groupActivity.dispatchCreate(savedInstanceState);
+        tabHost.setup(groupActivity);
+        initIntent();
+        addSpec();
+        ((RadioGroup) findViewById(R.id.tab_radiogroup))
+                .setOnCheckedChangeListener(this);*/
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,16 +137,14 @@ public class MainActivity extends BaseActivity
 
         MenuItem searchViewButton = menu.findItem(R.id.action_search);
 
-        SearchView searchView = (SearchView)searchViewButton.getActionView();
-        if(searchView != null)
-        {
+        SearchView searchView = (SearchView) searchViewButton.getActionView();
+        if (searchView != null) {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setIconifiedByDefault(false);
-            SearchView.SearchAutoComplete completeView = (SearchView.SearchAutoComplete)searchView.findViewById(R.id.search_src_text);
+            SearchView.SearchAutoComplete completeView = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
 
-            if(completeView != null)
-            {
+            if (completeView != null) {
                 completeView.setHintTextColor(getResources().getColor(R.color.colorAccent));
                 completeView.setDropDownBackgroundResource(R.drawable.tab_bg);
             }
@@ -147,15 +165,14 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.action_search:
                 break;
-                //return super.onOptionsItemSelected(item);
+            //return super.onOptionsItemSelected(item);
             case R.id.action_settings:
                 Toast.makeText(this, "Settings Click", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_sign_out:
                 finish();
                 break;
-            case R.id.add_new_message:
-            {
+            case R.id.add_new_message: {
                 /**
                  * 启动客服聊天界面。
                  *
@@ -166,9 +183,9 @@ public class MainActivity extends BaseActivity
                  */
                 RongIM.getInstance().startConversation(MainActivity.this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU144879668568541", "客服");
 
-               // if (mUserId != null && RongIM.getInstance() != null)
+                // if (mUserId != null && RongIM.getInstance() != null)
                 //此处聊天是写死的 实际开发中 大家应该写成动态的startPrivateChat
-                  //  RongIM.getInstance().startPrivateChat(MainActivity.this, mUserId.equals("10010") ? "10086" : "10010", mUserId.equals("10010") ? "移动" : "联通");
+                //  RongIM.getInstance().startPrivateChat(MainActivity.this, mUserId.equals("10010") ? "10086" : "10010", mUserId.equals("10010") ? "移动" : "联通");
 
             }
             break;
@@ -217,13 +234,12 @@ public class MainActivity extends BaseActivity
             case R.id.tab_rb_itinerary:
                 mViewPager.setCurrentItem(1);
                 break;
-            case R.id.tab_rb_message:
-            {
-                Intent intent = new Intent(this,ConversationListActivity.class);
+            case R.id.tab_rb_message: {
+                Intent intent = new Intent(this, ConversationListActivity.class);
                 startActivity(intent);
-               // mViewPager.setCurrentItem(2);
+                // mViewPager.setCurrentItem(2);
             }
-                break;
+            break;
             case R.id.tab_rb_contact:
                 mViewPager.setCurrentItem(3);
                 break;
@@ -272,6 +288,7 @@ public class MainActivity extends BaseActivity
             return null;
         }
     }
+
     /**
      * 连接融云服务器
      *
@@ -283,13 +300,13 @@ public class MainActivity extends BaseActivity
             @Override
             public void onSuccess(String userId) {
                 mUserId = userId;
-                    Toast.makeText(MainActivity.this, "connet server success",
-                            Toast.LENGTH_SHORT).show();
-                 //
+                Toast.makeText(MainActivity.this, "connet server success",
+                        Toast.LENGTH_SHORT).show();
+                //
                 Log.e(LOG_TAG, "connect success userid is :" + userId);
 
                 // 默认设置头像
-                if(RongIM.getInstance() != null) {
+                if (RongIM.getInstance() != null) {
                     RongIM.getInstance().setCurrentUserInfo(new UserInfo("10010", "曾经故人", Uri.parse("http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"))
                     );
                 }
@@ -300,6 +317,7 @@ public class MainActivity extends BaseActivity
                 Log.e(LOG_TAG,
                         "connect failure errorCode is :" + errorCode.getValue());
             }
+
             @Override
             public void onTokenIncorrect() {
                 Log.e(LOG_TAG, "token is error , please check token and appkey ");
@@ -307,4 +325,44 @@ public class MainActivity extends BaseActivity
         });
     }
 
+    /**
+     * 初始化各个tab标签对应的intent
+     */
+    private void initIntent() {
+        mainIntent = new Intent(this, MainActivity.class);
+        // tripIntent = new Intent(this, ScoreActivity.class);
+        messageIntent = new Intent(this, ConversationListActivity.class);
+        // contractIntent = new Intent(this, CertificateActivity.class);
+    }
+
+    /**
+     * 为tabHost添加各个标签项
+     */
+    private void addSpec() {
+       /* tabHost.addTab(this.buildTagSpec("tab_study", R.string.study_progress,
+                R.drawable.account01, studyIntent));
+        tabHost.addTab(this.buildTagSpec("tab_score", R.string.test_score,
+                R.drawable.account02, scoreIntent));
+        tabHost.addTab(this.buildTagSpec("tab_fee", R.string.fee_pay,
+                R.drawable.account03, feeIntent));
+        tabHost.addTab(this.buildTagSpec("tab_certificate",
+                R.string.certificate_grant, R.drawable.account04,
+                certificateIntent));*/
+    }
+
+    /**
+     * 自定义创建标签项的方法
+     *
+     * @param tagName  标签标识
+     * @param tagLable 标签文字
+     * @param icon     标签图标
+     * @param content  标签对应的内容
+     * @return
+     */
+    private TabHost.TabSpec buildTagSpec(String tagName, int tagLable,
+                                         int icon, Intent content) {
+        // return tabHost.newTabSpec(tagName).setIndicator(getResources().getString(tagLable,
+        //       getResources().getDrawable(icon)).setContent(content);
+        return  null;
+    }
 }
