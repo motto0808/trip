@@ -4,6 +4,8 @@ package com.easylife.letsgo.utils;
 import android.util.Log;
 
 import com.easylife.letsgo.AppContext;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.net.URLConnection;
  */
 public class NetUtil {
     private static String Tag = "NetUtil";
+    //改成外网地址或者同一个局域网内的地址
     private static final String BASE_URL = "http://192.168.1.2:8080/";
 
 
@@ -33,7 +36,7 @@ public class NetUtil {
 
             HttpURLConnection httpUrlConnection = (HttpURLConnection) urlConnection;
             httpUrlConnection.setDoInput(true);
-            httpUrlConnection.setRequestMethod("Get");
+            httpUrlConnection.setRequestMethod("GET");
 
             if (AppContext.getInstance().getSharedPreferences() != null) {
                 httpUrlConnection.addRequestProperty("COOKIE", AppContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
@@ -47,7 +50,10 @@ public class NetUtil {
 
             return StringUtil.convertStreamToString(is);
 
-        } catch (Exception e) {
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(Exception e) {
             e.printStackTrace();
         }
         return null;
