@@ -7,6 +7,7 @@ import com.easylife.letsgo.AppContext;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -21,7 +22,7 @@ public class NetUtil {
     private static String Tag = "NetUtil";
     //改成外网地址或者同一个局域网内的地址
     private static final String BASE_URL = "http://192.168.1.2:8080/";
-
+    private static final CookieManager cookieManager = new CookieManager();
 
     /**
      * 发送GET请求方法
@@ -29,27 +30,36 @@ public class NetUtil {
      * @param requestUrl 请求的URL
      * @return 响应的数据
      */
-    public static String sendGetRequest(String requestUrl) {
+    public static String sendGetRequest(String request) {
         try {
-            URL url = new URL(BASE_URL + requestUrl);
+            URL url = new URL(BASE_URL + request);
             URLConnection urlConnection = url.openConnection();
-
             HttpURLConnection httpUrlConnection = (HttpURLConnection) urlConnection;
             httpUrlConnection.setDoInput(true);
             httpUrlConnection.setRequestMethod("GET");
-
-            if (AppContext.getInstance().getSharedPreferences() != null) {
-                httpUrlConnection.addRequestProperty("COOKIE", AppContext.getInstance().getSharedPreferences().getString("DEMO_COOKIE", null));
-            } else {
-                Log.e(Tag, "DEMO_COOKIE  null ----:");
-            }
-
             httpUrlConnection.connect();
-
             InputStream is = httpUrlConnection.getInputStream();
-
             return StringUtil.convertStreamToString(is);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public static String sendPostRequest(String request)
+    {
+        try {
+            URL url = new URL(BASE_URL + request);
+            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) urlConnection;
+            httpUrlConnection.setDoInput(true);
+            httpUrlConnection.setRequestMethod("POST");
+            httpUrlConnection.connect();
+            InputStream is = httpUrlConnection.getInputStream();
+            return StringUtil.convertStreamToString(is);
         } catch(IOException e) {
             e.printStackTrace();
         }

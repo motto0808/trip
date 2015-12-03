@@ -1,9 +1,6 @@
 package com.easylife.letsgo.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.sea_monster.common.ParcelUtils;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 
@@ -13,116 +10,38 @@ import java.io.Serializable;
  * @Author Motto Yin
  * @Date 2015/12/2
  */
-public class User implements Parcelable, Serializable {
-
-    private String userId;
-
-    private String passwd;
-
+public class User implements Serializable {
     /**
-     * 返回码
+     * id : 0
+     * username : username
+     * password : password
      */
-    private int code;
-    /**
-     * 错误码 message
-     */
-    private String message;
-    /**
-     * 返回信息
-     */
-    private int result;
 
-    public User() {
+    private int id;
+    private String username;
+    private String password;
 
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public User(Parcel in) {
-        userId = ParcelUtils.readFromParcel(in);
-        passwd = ParcelUtils.readFromParcel(in);
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-
-        @Override
-        public User createFromParcel(Parcel source) {
-
-            return new User(source);
-
-        }
-
-        @Override
-        public User[] newArray(int size) {
-
-            return new User[size];
-
-        }
-
-    };
-
-    @Override
-    public int describeContents() {
-
-        return 0;
-
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        ParcelUtils.writeToParcel(dest, userId);
-
-        ParcelUtils.writeToParcel(dest, passwd);
-
+    public int getId() {
+        return id;
     }
 
-    public String getUserId() {
-
-        return userId;
-
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-
-        this.userId = userId;
-
+    public String getPassword() {
+        return password;
     }
-
-
-    public String getPasswd() {
-
-        return passwd;
-
-    }
-
-    public void setPasswd(String passwd) {
-
-        this.passwd = passwd;
-
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getResult() {
-        return result;
-    }
-
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-
 }

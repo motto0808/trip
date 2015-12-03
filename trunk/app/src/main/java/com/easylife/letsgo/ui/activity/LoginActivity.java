@@ -42,9 +42,12 @@ import android.widget.Toast;
 
 import com.easylife.letsgo.AppContext;
 import com.easylife.letsgo.R;
+import com.easylife.letsgo.model.ApiResponse;
+import com.easylife.letsgo.model.User;
 import com.easylife.letsgo.utils.NetUtil;
 import com.easylife.letsgo.utils.StringUtil;
 import com.easylife.letsgo.ui.widget.EditTextHolder;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -447,17 +450,25 @@ public class LoginActivity extends BaseActivity
 
                 String req = String.format("v1/user/login?username=%s&password=%s", mEmail, mPassword);
 
-                String s_body = NetUtil.sendGetRequest(req);
-                if(s_body != null)
+                String response = NetUtil.sendGetRequest(req);
+                if(response != null)
                 {
-                    Log.d(Tag, s_body);
+                    Gson gson = new Gson();
+                    ApiResponse<User> res = new ApiResponse<>();
+                    res = gson.fromJson(response, res.getClass());
+
+                    if(res.getError() == 0) {
+                        User user = res.getData();
+                        Log.d(Tag, user.getUsername());
+                    }
+                    else {
+                        Log.e(Tag, res.getReason());
+                    }
                 }
                 else
                 {
                     Log.e(Tag, "Login Error");
                 }
-
-
             } catch (IllegalArgumentException e){
                 return false;
             }
