@@ -14,7 +14,7 @@
     <string name="title_activity_splash">说走就走</string>
     <string name="action_search">搜索</string>
     <string name="fragment_title_contact">联系人</string>
-    <string name="fragment_title_itnerary">行程</string>
+    <string name="fragment_title_itinerary">行程</string>
     <string name="fragment_title_message">消息</string>
     <string name="fragment_title_start">开始</string>
     <string name="no_itinerary">当前还没有行程</string>

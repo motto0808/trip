@@ -48,6 +48,7 @@ import com.easylife.letsgo.utils.NetUtil;
 import com.easylife.letsgo.utils.StringUtil;
 import com.easylife.letsgo.ui.widget.EditTextHolder;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -470,6 +471,8 @@ public class LoginActivity extends BaseActivity
                     Log.e(Tag, "Login Error");
                 }
             } catch (IllegalArgumentException e){
+                return false;
+            } catch(JsonSyntaxException e){
                 return false;
             }
             return true;

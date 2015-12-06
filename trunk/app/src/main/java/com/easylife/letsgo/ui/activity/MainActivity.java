@@ -2,20 +2,22 @@ package com.easylife.letsgo.ui.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RadioGroup;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.easylife.letsgo.R;
@@ -36,7 +38,7 @@ import io.rong.imlib.model.UserInfo;
 
 public class MainActivity extends BaseActivity
         implements ViewPager.OnPageChangeListener,
-        RadioGroup.OnCheckedChangeListener {
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String LOG_TAG = "MainActivity";
     /**
@@ -57,19 +59,10 @@ public class MainActivity extends BaseActivity
      */
     private ViewPager mViewPager;
 
-    private RadioGroup mRadioGroup;
 
     private String mUserId;
     //Token 用户访问令牌
     private static final String Token = "EQLdcXTrMtUAbzHnx9++mhUiRdf6elHkp9Esc75UM9KbX75gpwHy6iopuZE0A4F4pmLlEL/liKS7HdphT3UgDUOQUB0yTHHCP7AKrlsDJfqx9UzAL66Faw==";
-
-    //tab 切换
-    private TabHost tabHost;
-
-    private Intent mainIntent;
-    private Intent tripIntent;
-    private Intent messageIntent;
-    private Intent contractIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,20 +75,13 @@ public class MainActivity extends BaseActivity
          */
         connectRongServer(Token);
 
-        //加载页面
-       /* tabHost = (TabHost) findViewById(R.id.my_tabhost);
-        LocalActivityManager groupActivity =
-                new LocalActivityManager(this,false);
-        groupActivity.dispatchCreate(savedInstanceState);
-        tabHost.setup(groupActivity);
-        initIntent();
-        addSpec();
-        ((RadioGroup) findViewById(R.id.tab_radiogroup))
-                .setOnCheckedChangeListener(this);*/
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
+        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -125,8 +111,26 @@ public class MainActivity extends BaseActivity
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(this);
 
-        mRadioGroup = (RadioGroup) findViewById(R.id.tab_menu);
-        mRadioGroup.setOnCheckedChangeListener(this);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -181,7 +185,7 @@ public class MainActivity extends BaseActivity
                  * @param targetId         客服 Id。
                  * @param title            客服标题。
                  */
-                RongIM.getInstance().startConversation(MainActivity.this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU144879668568541", "客服");
+                RongIM.getInstance().startConversation(this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU144879668568541", "客服");
 
                 // if (mUserId != null && RongIM.getInstance() != null)
                 //此处聊天是写死的 实际开发中 大家应该写成动态的startPrivateChat
@@ -203,20 +207,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
-        switch (position) {
-            case 0:
-                mRadioGroup.check(R.id.tab_rb_start);
-                break;
-            case 1:
-                mRadioGroup.check(R.id.tab_rb_itinerary);
-                break;
-            case 2:
-                mRadioGroup.check(R.id.tab_rb_message);
-                break;
-            case 3:
-                mRadioGroup.check(R.id.tab_rb_contact);
-                break;
-        }
+
     }
 
     @Override
@@ -225,25 +216,27 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        switch (checkedId) {
-            case R.id.tab_rb_start:
-                mViewPager.setCurrentItem(0);
-                break;
-            case R.id.tab_rb_itinerary:
-                mViewPager.setCurrentItem(1);
-                break;
-            case R.id.tab_rb_message: {
-                Intent intent = new Intent(this, ConversationListActivity.class);
-                startActivity(intent);
-                // mViewPager.setCurrentItem(2);
-            }
-            break;
-            case R.id.tab_rb_contact:
-                mViewPager.setCurrentItem(3);
-                break;
+        if (id == R.id.nav_start) {
+            mViewPager.setCurrentItem(0);
+        } else if (id == R.id.nav_itinerary) {
+            mViewPager.setCurrentItem(1);
+        } else if (id == R.id.nav_message) {
+            mViewPager.setCurrentItem(2);
+        } else if (id == R.id.nav_contact) {
+            mViewPager.setCurrentItem(3);
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 
@@ -279,7 +272,7 @@ public class MainActivity extends BaseActivity
                 case 0:
                     return getString(R.string.fragment_title_start);
                 case 1:
-                    return getString(R.string.fragment_title_itnerary);
+                    return getString(R.string.fragment_title_itinerary);
                 case 2:
                     return getString(R.string.fragment_title_message);
                 case 3:
@@ -323,46 +316,5 @@ public class MainActivity extends BaseActivity
                 Log.e(LOG_TAG, "token is error , please check token and appkey ");
             }
         });
-    }
-
-    /**
-     * 初始化各个tab标签对应的intent
-     */
-    private void initIntent() {
-        mainIntent = new Intent(this, MainActivity.class);
-        // tripIntent = new Intent(this, ScoreActivity.class);
-        messageIntent = new Intent(this, ConversationListActivity.class);
-        // contractIntent = new Intent(this, CertificateActivity.class);
-    }
-
-    /**
-     * 为tabHost添加各个标签项
-     */
-    private void addSpec() {
-       /* tabHost.addTab(this.buildTagSpec("tab_study", R.string.study_progress,
-                R.drawable.account01, studyIntent));
-        tabHost.addTab(this.buildTagSpec("tab_score", R.string.test_score,
-                R.drawable.account02, scoreIntent));
-        tabHost.addTab(this.buildTagSpec("tab_fee", R.string.fee_pay,
-                R.drawable.account03, feeIntent));
-        tabHost.addTab(this.buildTagSpec("tab_certificate",
-                R.string.certificate_grant, R.drawable.account04,
-                certificateIntent));*/
-    }
-
-    /**
-     * 自定义创建标签项的方法
-     *
-     * @param tagName  标签标识
-     * @param tagLable 标签文字
-     * @param icon     标签图标
-     * @param content  标签对应的内容
-     * @return
-     */
-    private TabHost.TabSpec buildTagSpec(String tagName, int tagLable,
-                                         int icon, Intent content) {
-        // return tabHost.newTabSpec(tagName).setIndicator(getResources().getString(tagLable,
-        //       getResources().getDrawable(icon)).setContent(content);
-        return  null;
     }
 }

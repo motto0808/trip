@@ -18,10 +18,7 @@ public class ConversationActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         //唯一有用的代码，加载一个 layout
-        setContentView(R.layout.conversation);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_conversation);
 
         //继承的是ActionBarActivity，直接调用 自带的 Actionbar，下面是Actionbar 的配置，如果不用可忽略…
         getSupportActionBar().setTitle("聊天");
