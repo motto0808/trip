@@ -145,7 +145,7 @@ public class LoginActivity extends BaseActivity
         findViewById(R.id.login_tv_forgot).setOnClickListener(this);
         findViewById(R.id.login_tv_sign_up).setOnClickListener(this);
 
-        mImgBackground = (ImageView) findViewById(R.id.login_img_backgroud);
+        mImgBackground = (ImageView) findViewById(R.id.login_img_background);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
